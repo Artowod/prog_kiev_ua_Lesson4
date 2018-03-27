@@ -1,6 +1,12 @@
 package ua.prog.java.lesson4;
 
-import java.awt.IllegalComponentStateException;
+import java.io.BufferedWriter;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
@@ -257,6 +263,45 @@ public class Group implements Voenkom {
 
 	public List<Student> getStudentsForVoenkom() {
 		return getSoldiers(getArrayWithoutNulls(groupOfStudents));
+	}
+
+	public boolean groupToTextFile(String filePath) {
+		try (BufferedWriter buffer = new BufferedWriter(new FileWriter(filePath))) {
+			for (Student st : getArrayWithoutNulls(groupOfStudents)) {
+				buffer.write(st.toString());
+				buffer.newLine();
+			}
+		} catch (IOException e) {
+			System.out.println("Some IO Error in putStringToFile module");
+			return false;
+		}
+		System.out.println("Запись в файл выполнена.");
+		return true;
+	}
+
+	public boolean serializeGroupToFile(String filePath) {
+		try (ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(filePath))) {
+			oos.writeObject(getArrayWithoutNulls(groupOfStudents));
+		} catch (IOException e) {
+			System.out.println("Some IO Error in putStringToFile module");
+			return false;
+		}
+		System.out.println("Запись в файл выполнена.");
+		return true;
+	}
+
+	public boolean deSerializeGroupFromFile(String filePath) {
+		try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(filePath))) {
+			groupOfStudents = (Student[]) ois.readObject();
+		} catch (IOException e) {
+			System.out.println("Some IO Error in putStringToFile module");
+			return false;
+		} catch (ClassNotFoundException e) {
+			System.out.println("File not found during deSerializing process of students Group from file");
+			return false;
+		}
+		System.out.println("Чтение из файла выполнено.");
+		return true;
 	}
 
 	@Override

@@ -1,6 +1,8 @@
 package ua.prog.java.lesson4;
 
-public class Human implements Comparable {
+import java.io.Serializable;
+
+public class Human implements Comparable, Serializable {
 	private String name;
 	private String surname;
 	private String sex;

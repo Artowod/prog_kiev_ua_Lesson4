@@ -1,6 +1,9 @@
 package ua.prog.java.lesson4;
 
 public class Student extends Human {
+
+	private static final long serialVersionUID = 1L;
+
 	public Student(String name, String surname, String sex, int age) {
 		super(name, surname, sex, age);
 	}
